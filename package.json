@@ -1,0 +1,23 @@
+{
+  "name": "combo-proxy",
+  "version": "0.0.1",
+  "description": "A node server, proxy about combo assets( js & css )",
+  "main": "config.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/silentcloud/combo-proxy.git"
+  },
+  "keywords": [
+    "proxy",
+    "combo",
+    "assets"
+  ],
+  "author": "silentcloud",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silentcloud/combo-proxy/issues"
+  }
+}
