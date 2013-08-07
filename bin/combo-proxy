@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+var commander = require('commander');
+
+commander.
+  version(require('../package').version).
+  usage('[options]').
+  parse(process.argv);
+
+var config = require('../config'),
+    Comboproxy = require('../app');
+
+new Comboproxy(config).init();
+
+
+
+
