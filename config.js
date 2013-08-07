@@ -1,6 +1,6 @@
 module.exports = {
 
-    localPrefix: "/Users/muqiang/Desktop/assets",  //本地路径前缀
+    localPrefix: "/home/silentcloud/Desktop/assets",  //本地路径前缀
 
     onlineHost: "static.alipayobjects.com",  //线上映射地址的host
 

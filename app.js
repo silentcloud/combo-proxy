@@ -25,17 +25,15 @@ Comboproxy.prototype = {
                 pathName = urlObj.path.replace(/([^?])\?[^?]*$/, "$1").replace(/\?$/, "");
 
             if(pathName.indexOf("??") == -1){ //非combo
-                that._proxySingle(pathName);
+                that._proxySingle(pathName, res);
             } else{
-                that._proxyCombo(pathName);
+                that._proxyCombo(pathName, res);
             }
-
-            res.end('haha');
 
         }).listen(that.config.localPort || 80);
     },
 
-    _proxySingle: function(pathName){
+    _proxySingle: function(pathName, res){
         var ext = path.extname(pathName), type = '', config = this.config;
 
         switch(ext){
