@@ -1,7 +1,7 @@
 var http = require('http'),
     url = require('url'),
     path = require('path'),
-    Readfile = require('./lib/readfile');
+    Readfiles = require('./lib/readfile');
 
 function Comboproxy(config){
     this.config = config;
@@ -15,7 +15,6 @@ Comboproxy.prototype = {
     _createServer: function(){
         var that = this;
         http.createServer(function(req, res){
-            res.writeHead(200);
 
             if(req.url === '/favicon.ico'){
                 res.end();
@@ -32,10 +31,9 @@ Comboproxy.prototype = {
 
         }).listen(that.config.localPort || 80);
     },
-
-    _proxySingle: function(pathName, res){
-        var ext = path.extname(pathName), type = '', config = this.config;
-
+    _getfileExt: function(ext){
+        if(!ext) return;
+        var type = '';
         switch(ext){
             case '.js':
                 type = 'javascript';
@@ -47,14 +45,20 @@ Comboproxy.prototype = {
                 type = 'plain';
                 break;
         }
+        return type;
+    },
+    _proxySingle: function(pathName, res){
+        var ext = path.extname(pathName),
+            config = this.config,
+            type = this._getfileExt(ext);
 
-        new Readfile({
+        new Readfiles({
             localPrefix: config.localPrefix,
             onlineHost: config.onlineHost,
             onlinePrefix: config.onlinePrefix,
             success: function(data){
                 res.writeHead(200, {
-                    'Content-Type': 'text/' + type
+                    'Content-Type': 'text/' + type + ';charset=utf-8'
                 });
                 res.end(data);
             },
@@ -63,8 +67,27 @@ Comboproxy.prototype = {
 
     },
 
-    _proxyCombo: function(pathName){
+    _proxyCombo: function(pathName, res){
+        var config = this.config,
+            pathArr = pathName.split("??"),
+            fileList = pathArr[1].split(","),
+            ext = path.extname(fileList[0]),
+            type = this._getfileExt(ext);
 
+        console.log(fileList)
+
+        new Readfiles({
+            localPrefix: config.localPrefix,
+            onlineHost: config.onlineHost,
+            onlinePrefix: config.onlinePrefix,
+            success:function(data){
+                res.writeHead(200, {
+                    'Content-Type': 'text/'+type
+                });
+                res.end(data);
+            },
+            paths:fileList
+        }).read();
     }
 
 }
